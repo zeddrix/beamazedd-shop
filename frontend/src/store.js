@@ -19,6 +19,7 @@ store.subscribe(
 	throttle(() => {
 		saveState({
 			cart: store.getState().cart,
+			userLogin: store.getState().userLogin,
 		});
 	})
 );
