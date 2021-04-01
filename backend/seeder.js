@@ -13,7 +13,7 @@ dotenv.config();
 connectDB();
 
 // Import into DB
-// Command: node seeder -i
+// Command: npm run data-i
 const importData = async () => {
 	try {
 		await Order.deleteMany();
@@ -39,7 +39,7 @@ const importData = async () => {
 };
 
 // Delete data in DB
-// Command: node seeder -d
+// Command: npm run data-d
 const deleteData = async () => {
 	try {
 		await Order.deleteMany();
