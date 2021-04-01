@@ -9,10 +9,9 @@ import {
 	Form,
 	Button,
 	Card,
-	ListGroupItem,
 } from 'react-bootstrap';
 import Message from '../components/Message';
-import { addToCart } from '../actions/cartActions';
+import { addToCart, removeFromCart } from '../actions/cartActions';
 
 const CartScreen = ({ match, location, history }) => {
 	const productId = match.params.id;
@@ -21,8 +20,7 @@ const CartScreen = ({ match, location, history }) => {
 
 	const dispatch = useDispatch();
 
-	const cart = useSelector((state) => state.cart);
-	const { cartItems } = cart;
+	const cartItems = useSelector((state) => state.cart.cartItems);
 
 	useEffect(() => {
 		if (productId) {
@@ -31,10 +29,10 @@ const CartScreen = ({ match, location, history }) => {
 	}, [dispatch, productId, qty]);
 
 	const removeFromCartHandler = (id) => {
-		console.log('remove');
+		dispatch(removeFromCart(id));
 	};
 
-	const checkoutHandler = (id) => {
+	const checkoutHandler = () => {
 		history.push('/login?redirect=shipping');
 	};
 
@@ -55,7 +53,7 @@ const CartScreen = ({ match, location, history }) => {
 										<Image src={item.image} alt={item.name} fluid rounded />
 									</Col>
 									<Col md={3}>
-										<Link to={`/product/${item.product}`}>{item.name} </Link>
+										<Link to={`/product/${item.product}`}>{item.name}</Link>
 									</Col>
 									<Col md={2}>${item.price}</Col>
 									<Col md={2}>

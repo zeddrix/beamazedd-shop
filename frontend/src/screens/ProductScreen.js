@@ -23,7 +23,10 @@ const ProductScreen = ({ history, match }) => {
 	const { loading, error, product } = productDetails;
 	useEffect(() => {
 		dispatch(listProductDetails(match.params.id));
+		console.log(match.params.id);
 	}, [dispatch, match]);
+
+	console.log('product', product);
 
 	const addToCartHandler = () => {
 		history.push(`/cart/${match.params.id}?qty=${qty}`);
