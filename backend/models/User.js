@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 const UserSchema = mongoose.Schema(
 	{
@@ -25,6 +26,10 @@ const UserSchema = mongoose.Schema(
 		timestamps: true,
 	}
 );
+
+UserSchema.methods.matchPassword = async function (enteredPassword) {
+	return await bcrypt.compare(enteredPassword, this.password);
+};
 
 const User = mongoose.model('User', UserSchema);
 
