@@ -25,12 +25,13 @@ export const createOrder = (order) => async (dispatch, getState) => {
 			payload: data,
 		});
 	} catch (err) {
+		const message =
+			err.response && err.response.data.message
+				? err.response.data.message
+				: err.message;
 		dispatch({
-			type: c.ORDER_CREATE_FAIL,
-			payload:
-				err.response && err.response.data.message
-					? err.response.data.message
-					: err.message,
+			type: c.ORDER_DETAILS_FAIL,
+			payload: message,
 		});
 	}
 };
@@ -58,12 +59,13 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
 			payload: data,
 		});
 	} catch (err) {
+		const message =
+			err.response && err.response.data.message
+				? err.response.data.message
+				: err.message;
 		dispatch({
 			type: c.ORDER_DETAILS_FAIL,
-			payload:
-				err.response && err.response.data.message
-					? err.response.data.message
-					: err.message,
+			payload: message,
 		});
 	}
 };
