@@ -30,3 +30,10 @@ export const saveShippingAddress = (data) => (dispatch) => {
 		payload: data,
 	});
 };
+
+export const savePaymentMethod = (data) => (dispatch) => {
+	dispatch({
+		type: c.CART_SAVE_PAYMENT_METHOD,
+		payload: data,
+	});
+};
