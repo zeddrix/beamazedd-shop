@@ -34,3 +34,36 @@ export const createOrder = (order) => async (dispatch, getState) => {
 		});
 	}
 };
+
+export const getOrderDetails = (id) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: c.ORDER_DETAILS_REQUEST,
+		});
+
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		};
+
+		const { data } = await axios.get(`/api/orders/${id}`, config);
+
+		dispatch({
+			type: c.ORDER_DETAILS_SUCCESS,
+			payload: data,
+		});
+	} catch (err) {
+		dispatch({
+			type: c.ORDER_DETAILS_FAIL,
+			payload:
+				err.response && err.response.data.message
+					? err.response.data.message
+					: err.message,
+		});
+	}
+};

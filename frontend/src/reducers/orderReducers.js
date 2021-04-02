@@ -17,7 +17,31 @@ export const orderCreateReducer = (state = {}, action) => {
 				loading: false,
 				error: action.payload,
 			};
+		default:
+			return state;
+	}
+};
 
+export const orderDetailsReducer = (
+	state = { orderitems: [], shippingAddress: {} },
+	action
+) => {
+	switch (action.type) {
+		case c.ORDER_DETAILS_REQUEST:
+			return {
+				...state,
+				loading: true,
+			};
+		case c.ORDER_DETAILS_SUCCESS:
+			return {
+				loading: false,
+				order: action.payload,
+			};
+		case c.ORDER_DETAILS_FAIL:
+			return {
+				loading: false,
+				error: action.payload,
+			};
 		default:
 			return state;
 	}
