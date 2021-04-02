@@ -113,3 +113,40 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
 		});
 	}
 };
+
+export const updateUserProfile = (user) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: c.USER_UPDATE_PROFILE_REQUEST,
+		});
+
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		};
+
+		const { data } = await axios.put(`/api/users/profile`, user, config);
+
+		dispatch({
+			type: c.USER_UPDATE_PROFILE_SUCCESS,
+			payload: data,
+		});
+	} catch (error) {
+		const message =
+			error.response && error.response.data.message
+				? error.response.data.message
+				: error.message;
+		if (message === 'Not authorized, token failed') {
+			dispatch(logout());
+		}
+		dispatch({
+			type: c.USER_UPDATE_PROFILE_FAIL,
+			payload: message,
+		});
+	}
+};
