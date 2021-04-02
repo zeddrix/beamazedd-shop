@@ -11,12 +11,14 @@ const OrderScreen = ({ match }) => {
 
 	const dispatch = useDispatch();
 
-	useEffect(() => {
-		dispatch(getOrderDetails(orderId));
-	}, [dispatch, orderId]);
-
 	const orderCreate = useSelector((state) => state.orderCreate);
 	const { order, loading, error } = orderCreate;
+
+	useEffect(() => {
+		if (!order || order._id !== orderId) {
+			dispatch(getOrderDetails(orderId));
+		}
+	}, [dispatch, order, orderId]);
 
 	const {
 		orderItems,
