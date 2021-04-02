@@ -23,3 +23,10 @@ export const removeFromCart = (id) => (dispatch) => {
 		payload: id,
 	});
 };
+
+export const saveShippingAddress = (data) => (dispatch) => {
+	dispatch({
+		type: c.CART_SAVE_SHIPPING_ADDRESS,
+		payload: data,
+	});
+};
