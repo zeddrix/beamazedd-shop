@@ -9,30 +9,28 @@ import { createOrder } from '../actions/orderActions';
 const PlaceOrderScreen = ({ history }) => {
 	const dispatch = useDispatch();
 
-	const shippingAddress = useSelector((state) => state.cart.shippingAddress);
-	const { address, city, postalCode, country } = shippingAddress;
 	const cart = useSelector((state) => state.cart);
 
-	let {
-		paymentMethod,
-		cartItems,
-		itemsPrice,
-		shippingPrice,
-		taxPrice,
-		totalPrice,
-	} = cart;
+	if (!cart.shippingAddress.address) {
+		history.push('/shipping');
+	} else if (!cart.paymentMethod) {
+		history.push('/payment');
+	}
+	//   Calculate prices
+	const addDecimals = (num) => {
+		return (Math.round(num * 100) / 100).toFixed(2);
+	};
 
-	// Calculate prices
-	const addDecimals = (num) => (Math.round(num * 100) / 100).toFixed(2);
-
-	itemsPrice = addDecimals(
-		cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+	cart.itemsPrice = addDecimals(
+		cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
 	);
-	shippingPrice = addDecimals(itemsPrice > 100 ? 0 : 100);
-	taxPrice = addDecimals(Number((0.15 * itemsPrice).toFixed(2)));
-	totalPrice = addDecimals(
-		Number(itemsPrice) + Number(shippingPrice) + Number(taxPrice)
-	);
+	cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 100);
+	cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)));
+	cart.totalPrice = (
+		Number(cart.itemsPrice) +
+		Number(cart.shippingPrice) +
+		Number(cart.taxPrice)
+	).toFixed(2);
 
 	const orderCreate = useSelector((state) => state.orderCreate);
 	const { order, success, error } = orderCreate;
@@ -47,13 +45,13 @@ const PlaceOrderScreen = ({ history }) => {
 	const placeOrderHandler = () => {
 		dispatch(
 			createOrder({
-				orderItems: cartItems,
-				shippingAddress,
-				paymentMethod,
-				itemsPrice,
-				shippingPrice,
-				taxPrice,
-				totalPrice,
+				orderItems: cart.cartItems,
+				shippingAddress: cart.shippingAddress,
+				paymentMethod: cart.paymentMethod,
+				itemsPrice: cart.itemsPrice,
+				shippingPrice: cart.shippingPrice,
+				taxPrice: cart.taxPrice,
+				totalPrice: cart.totalPrice,
 			})
 		);
 	};
@@ -68,23 +66,25 @@ const PlaceOrderScreen = ({ history }) => {
 							<h2>Shipping</h2>
 							<p>
 								<strong>Address:</strong>
-								{address}, {city} {postalCode}, {country}
+								{cart.shippingAddress.address}, {cart.shippingAddress.city}{' '}
+								{cart.shippingAddress.postalCode},{' '}
+								{cart.shippingAddress.country}
 							</p>
 						</ListGroup.Item>
 
 						<ListGroup.Item>
 							<h2>Payment Method</h2>
 							<strong>Method: </strong>
-							{paymentMethod}
+							{cart.paymentMethod}
 						</ListGroup.Item>
 
 						<ListGroup.Item>
 							<h2>Order Items</h2>
-							{cartItems.length === 0 ? (
+							{cart.cartItems.length === 0 ? (
 								<Message>Your cart is empty</Message>
 							) : (
 								<ListGroup variant='flush'>
-									{cartItems.map((item, index) => (
+									{cart.cartItems.map((item, index) => (
 										<ListGroup.Item key={index}>
 											<Row>
 												<Col md={1}>
@@ -124,25 +124,25 @@ const PlaceOrderScreen = ({ history }) => {
 							<ListGroup.Item>
 								<Row>
 									<Col>Items</Col>
-									<Col>${itemsPrice}</Col>
+									<Col>${cart.itemsPrice}</Col>
 								</Row>
 							</ListGroup.Item>
 							<ListGroup.Item>
 								<Row>
 									<Col>Shipping</Col>
-									<Col>${shippingPrice}</Col>
+									<Col>${cart.shippingPrice}</Col>
 								</Row>
 							</ListGroup.Item>
 							<ListGroup.Item>
 								<Row>
 									<Col>Tax</Col>
-									<Col>${taxPrice}</Col>
+									<Col>${cart.taxPrice}</Col>
 								</Row>
 							</ListGroup.Item>
 							<ListGroup.Item>
 								<Row>
 									<Col>Total</Col>
-									<Col>${totalPrice}</Col>
+									<Col>${cart.totalPrice}</Col>
 								</Row>
 							</ListGroup.Item>
 							<ListGroup.Item>
@@ -152,7 +152,7 @@ const PlaceOrderScreen = ({ history }) => {
 								<Button
 									type='button'
 									className='btn-block'
-									disabled={cartItems === 0}
+									disabled={cart.cartItems === 0}
 									onClick={placeOrderHandler}>
 									Place Order
 								</Button>

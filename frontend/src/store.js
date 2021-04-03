@@ -19,7 +19,8 @@ store.subscribe(
 	throttle(() => {
 		saveState({
 			cart: store.getState().cart,
-			orderCreate: store.getState().orderCreate,
+			// orderCreate: store.getState().orderCreate,
+			// orderDetails: store.getState().orderDetails,
 			userLogin: store.getState().userLogin,
 		});
 	})
