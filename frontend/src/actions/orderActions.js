@@ -128,7 +128,7 @@ export const getMyOrder = () => async (dispatch, getState) => {
 			},
 		};
 
-		const { data } = await axios.GET(`/api/orders/myorders`, config);
+		const { data } = await axios.get(`/api/orders/myorders`, config);
 
 		dispatch({
 			type: c.GET_MY_ORDER_SUCCESS,
