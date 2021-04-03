@@ -69,3 +69,24 @@ export const orderPayReducer = (state = {}, action) => {
 			return state;
 	}
 };
+
+export const getMyOrderReducer = (state = { order: [] }, action) => {
+	switch (action.type) {
+		case c.GET_MY_ORDER_REQUEST:
+			return {
+				loading: true,
+			};
+		case c.GET_MY_ORDER_SUCCESS:
+			return {
+				loading: false,
+				orders: action.payload,
+			};
+		case c.GET_MY_ORDER_FAIL:
+			return {
+				loading: false,
+				error: action.payload,
+			};
+		default:
+			return state;
+	}
+};

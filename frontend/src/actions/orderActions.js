@@ -111,3 +111,37 @@ export const payOrder = (orderId, paymentResult) => async (
 		});
 	}
 };
+
+export const getMyOrder = () => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: c.GET_MY_ORDER_REQUEST,
+		});
+
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		};
+
+		const { data } = await axios.GET(`/api/orders/myorders`, config);
+
+		dispatch({
+			type: c.GET_MY_ORDER_SUCCESS,
+			payload: data,
+		});
+	} catch (err) {
+		const message =
+			err.response && err.response.data.message
+				? err.response.data.message
+				: err.message;
+		dispatch({
+			type: c.GET_MY_ORDER_FAIL,
+			payload: message,
+		});
+	}
+};
