@@ -192,3 +192,39 @@ export const listUsers = () => async (dispatch, getState) => {
 		});
 	}
 };
+
+export const deleteUser = (id) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: c.USER_DELETE_REQUEST,
+		});
+
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		const config = {
+			headers: {
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		};
+
+		const { data } = await axios.delete(`/api/users/${id}`, config);
+
+		dispatch({
+			type: c.USER_DELETE_SUCCESS,
+		});
+	} catch (error) {
+		const message =
+			error.response && error.response.data.message
+				? error.response.data.message
+				: error.message;
+		if (message === 'Not authorized, token failed') {
+			dispatch(logout());
+		}
+		dispatch({
+			type: c.USER_DELETE_FAIL,
+			payload: message,
+		});
+	}
+};
