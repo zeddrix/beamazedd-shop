@@ -35,8 +35,11 @@ export const login = (email, password) => async (dispatch) => {
 };
 
 export const logout = () => (dispatch) => {
-	localStorage.removeItem('userInfo');
+	localStorage.removeItem('BEAMAZEDDSHOP');
 	dispatch({ type: c.USER_LOGOUT });
+	dispatch({ type: c.USER_DETAILS_RESET });
+	dispatch({ type: c.GET_MY_ORDER_RESET });
+	dispatch({ type: c.CART_RESET });
 };
 
 export const register = (name, email, password) => async (dispatch) => {

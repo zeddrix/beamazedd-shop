@@ -39,6 +39,8 @@ export const userRegisterReducer = (state = {}, action) => {
 				loading: false,
 				error: action.payload,
 			};
+		case c.USER_DETAILS_RESET:
+			return { user: {} };
 		default:
 			return state;
 	}
