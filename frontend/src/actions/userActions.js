@@ -38,7 +38,7 @@ export const logout = () => (dispatch) => {
 	localStorage.removeItem('BEAMAZEDDSHOP');
 	dispatch({ type: c.USER_LOGOUT });
 	dispatch({ type: c.USER_DETAILS_RESET });
-	dispatch({ type: c.GET_MY_ORDER_RESET });
+	dispatch({ type: c.MY_ORDER_LIST_RESET });
 	dispatch({ type: c.CART_RESET });
 	dispatch({ type: c.USER_LIST_RESET });
 };

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { getUserDetails, updateUserProfile } from '../actions/userActions';
-import { getMyOrder } from '../actions/orderActions';
+import { listMyOrder } from '../actions/orderActions';
 
 const ProfileScreen = ({ history }) => {
 	const [name, setName] = useState('');
@@ -31,7 +31,7 @@ const ProfileScreen = ({ history }) => {
 		} else {
 			if (!user.name) {
 				dispatch(getUserDetails('profile'));
-				dispatch(getMyOrder());
+				dispatch(listMyOrder());
 			} else {
 				setName(user.name);
 				setEmail(user.email);

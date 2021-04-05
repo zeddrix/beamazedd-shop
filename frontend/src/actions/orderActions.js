@@ -112,10 +112,10 @@ export const payOrder = (orderId, paymentResult) => async (
 	}
 };
 
-export const getMyOrder = () => async (dispatch, getState) => {
+export const listMyOrder = () => async (dispatch, getState) => {
 	try {
 		dispatch({
-			type: c.GET_MY_ORDER_REQUEST,
+			type: c.MY_ORDER_LIST_REQUEST,
 		});
 
 		const {
@@ -131,7 +131,7 @@ export const getMyOrder = () => async (dispatch, getState) => {
 		const { data } = await axios.get(`/api/orders/myorders`, config);
 
 		dispatch({
-			type: c.GET_MY_ORDER_SUCCESS,
+			type: c.MY_ORDER_LIST_SUCCESS,
 			payload: data,
 		});
 	} catch (err) {
@@ -140,7 +140,7 @@ export const getMyOrder = () => async (dispatch, getState) => {
 				? err.response.data.message
 				: err.message;
 		dispatch({
-			type: c.GET_MY_ORDER_FAIL,
+			type: c.MY_ORDER_LIST_FAIL,
 			payload: message,
 		});
 	}
