@@ -40,7 +40,7 @@ const UserEditScreen = ({ match, history }) => {
 				setIsAdmin(user.isAdmin);
 			}
 		}
-	}, [user, userId, dispatch, history, successUpdate]);
+	}, [dispatch, history, userId, user, successUpdate]);
 
 	const submitHandler = (e) => {
 		e.preventDefault();
@@ -62,7 +62,7 @@ const UserEditScreen = ({ match, history }) => {
 					<Message variant='danger'>{error}</Message>
 				) : (
 					<Form onSubmit={submitHandler}>
-						<Form.Group>
+						<Form.Group controlId='name'>
 							<Form.Label>Name</Form.Label>
 							<Form.Control
 								type='name'
@@ -71,7 +71,7 @@ const UserEditScreen = ({ match, history }) => {
 								onChange={(e) => setName(e.target.value)}></Form.Control>
 						</Form.Group>
 
-						<Form.Group>
+						<Form.Group controlId='email'>
 							<Form.Label>Email Address</Form.Label>
 							<Form.Control
 								type='email'

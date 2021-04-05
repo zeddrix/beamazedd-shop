@@ -23,13 +23,15 @@ export const login = (email, password) => async (dispatch) => {
 			type: c.USER_LOGIN_SUCCESS,
 			payload: data,
 		});
-	} catch (err) {
+
+		localStorage.setItem('userInfo', JSON.stringify(data));
+	} catch (error) {
 		dispatch({
 			type: c.USER_LOGIN_FAIL,
 			payload:
-				err.response && err.response.data.message
-					? err.response.data.message
-					: err.message,
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
 		});
 	}
 };
@@ -39,8 +41,8 @@ export const logout = () => (dispatch) => {
 	dispatch({ type: c.USER_LOGOUT });
 	dispatch({ type: c.USER_DETAILS_RESET });
 	dispatch({ type: c.MY_ORDER_LIST_RESET });
-	dispatch({ type: c.CART_RESET });
 	dispatch({ type: c.USER_LIST_RESET });
+	document.location.href = '/login';
 };
 
 export const register = (name, email, password) => async (dispatch) => {
@@ -70,13 +72,13 @@ export const register = (name, email, password) => async (dispatch) => {
 			type: c.USER_LOGIN_SUCCESS,
 			payload: data,
 		});
-	} catch (err) {
+	} catch (error) {
 		dispatch({
 			type: c.USER_REGISTER_FAIL,
 			payload:
-				err.response && err.response.data.message
-					? err.response.data.message
-					: err.message,
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
 		});
 	}
 };
@@ -141,6 +143,10 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
 			type: c.USER_UPDATE_PROFILE_SUCCESS,
 			payload: data,
 		});
+		dispatch({
+			type: c.USER_LOGIN_SUCCESS,
+			payload: data,
+		});
 	} catch (error) {
 		const message =
 			error.response && error.response.data.message
@@ -172,7 +178,7 @@ export const listUsers = () => async (dispatch, getState) => {
 			},
 		};
 
-		const { data } = await axios.get(`/api/users/`, config);
+		const { data } = await axios.get(`/api/users`, config);
 
 		dispatch({
 			type: c.USER_LIST_SUCCESS,
@@ -246,16 +252,13 @@ export const updateUser = (user) => async (dispatch, getState) => {
 			},
 		};
 
-		const { data } = await axios.put(`/api/users/${user._id}`, user, config);
+		await axios.put(`/api/users/${user._id}`, user, config);
 
 		dispatch({
 			type: c.USER_UPDATE_SUCCESS,
 		});
 
-		dispatch({
-			type: c.USER_DETAILS_SUCCESS,
-			payload: data,
-		});
+		dispatch({ type: c.USER_DETAILS_RESET });
 	} catch (error) {
 		const message =
 			error.response && error.response.data.message

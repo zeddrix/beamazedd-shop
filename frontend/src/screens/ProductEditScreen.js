@@ -50,7 +50,7 @@ const ProductEditScreen = ({ match, history }) => {
 				setDescription(product.description);
 			}
 		}
-	}, [product, productId, dispatch, history, successUpdate]);
+	}, [dispatch, history, productId, product, successUpdate]);
 
 	const uploadFileHandler = async (e) => {
 		const file = e.target.files[0];
@@ -69,8 +69,8 @@ const ProductEditScreen = ({ match, history }) => {
 
 			setImage(data);
 			setUploading(false);
-		} catch (err) {
-			console.error(err);
+		} catch (error) {
+			console.error(error);
 			setUploading(false);
 		}
 	};
@@ -152,7 +152,7 @@ const ProductEditScreen = ({ match, history }) => {
 							<Form.Label>Count In Stock</Form.Label>
 							<Form.Control
 								type='number'
-								placeholder='Enter count in stock'
+								placeholder='Enter countInStock'
 								value={countInStock}
 								onChange={(e) =>
 									setCountInStock(e.target.value)

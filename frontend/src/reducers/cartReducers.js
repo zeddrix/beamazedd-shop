@@ -1,7 +1,7 @@
 import * as c from '../actions/constants';
 
 export const cartReducer = (
-	state = { cartItems: [], shippingAddress: {}, paymentMethod: null },
+	state = { cartItems: [], shippingAddress: {} },
 	action
 ) => {
 	switch (action.type) {
@@ -27,10 +27,6 @@ export const cartReducer = (
 				...state,
 				cartItems: state.cartItems.filter((x) => x.product !== action.payload),
 			};
-		case c.CART_RESET:
-			return {
-				cartItems: [],
-			};
 		case c.CART_SAVE_SHIPPING_ADDRESS:
 			return {
 				...state,
@@ -40,6 +36,11 @@ export const cartReducer = (
 			return {
 				...state,
 				paymentMethod: action.payload,
+			};
+		case c.CART_CLEAR_ITEMS:
+			return {
+				...state,
+				cartItems: [],
 			};
 		default:
 			return state;

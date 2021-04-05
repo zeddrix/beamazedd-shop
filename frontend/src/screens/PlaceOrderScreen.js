@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { createOrder } from '../actions/orderActions';
+import { ORDER_CREATE_RESET } from '../actions/constants';
+import { USER_DETAILS_RESET } from '../actions/constants';
 
 const PlaceOrderScreen = ({ history }) => {
 	const dispatch = useDispatch();
@@ -38,6 +40,8 @@ const PlaceOrderScreen = ({ history }) => {
 	useEffect(() => {
 		if (success) {
 			history.push(`/order/${order._id}`);
+			dispatch({ type: USER_DETAILS_RESET });
+			dispatch({ type: ORDER_CREATE_RESET });
 		}
 		// eslint-disable-next-line
 	}, [history, success]);
@@ -106,10 +110,6 @@ const PlaceOrderScreen = ({ history }) => {
 											</Row>
 										</ListGroup.Item>
 									))}
-									<br />
-									<Link to='/'>
-										<p>Add More Items</p>
-									</Link>
 								</ListGroup>
 							)}
 						</ListGroup.Item>

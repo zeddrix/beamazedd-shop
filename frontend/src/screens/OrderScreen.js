@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { PayPalButton } from 'react-paypal-button-v2';
 import { Link } from 'react-router-dom';
-import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
+import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import {
-	deliverOrder,
 	getOrderDetails,
 	payOrder,
+	deliverOrder,
 } from '../actions/orderActions';
-import { ORDER_DELIVER_RESET, ORDER_PAY_RESET } from '../actions/constants';
+import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from '../actions/constants';
 
 const OrderScreen = ({ match, history }) => {
 	const orderId = match.params.id;
@@ -60,7 +60,7 @@ const OrderScreen = ({ match, history }) => {
 			document.body.appendChild(script);
 		};
 
-		if (!order || successPay || order._id !== orderId || successDeliver) {
+		if (!order || successPay || successDeliver || order._id !== orderId) {
 			dispatch({ type: ORDER_PAY_RESET });
 			dispatch({ type: ORDER_DELIVER_RESET });
 			dispatch(getOrderDetails(orderId));
@@ -212,8 +212,8 @@ const OrderScreen = ({ match, history }) => {
 								!order.isDelivered && (
 									<ListGroup.Item>
 										<Button
-											className='btn btn-block'
 											type='button'
+											className='btn btn-block'
 											onClick={deliverHandler}>
 											Mark As Delivered
 										</Button>

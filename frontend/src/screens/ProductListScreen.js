@@ -6,9 +6,9 @@ import Message from '../components/Message';
 import Loader from '../components/Loader';
 import Paginate from '../components/Paginate';
 import {
-	createProduct,
-	deleteProduct,
 	listProducts,
+	deleteProduct,
+	createProduct,
 } from '../actions/productActions';
 import { PRODUCT_CREATE_RESET } from '../actions/constants';
 
@@ -35,13 +35,14 @@ const ProductListScreen = ({ history, match }) => {
 		product: createdProduct,
 	} = productCreate;
 
-	const userInfo = useSelector((state) => state.userLogin.userInfo);
+	const userLogin = useSelector((state) => state.userLogin);
+	const { userInfo } = userLogin;
 
 	useEffect(() => {
 		dispatch({ type: PRODUCT_CREATE_RESET });
 
-		if (!userInfo.isAdmin) {
-			history.pust('/login');
+		if (!userInfo || !userInfo.isAdmin) {
+			history.push('/login');
 		}
 
 		if (successCreate) {
@@ -54,13 +55,13 @@ const ProductListScreen = ({ history, match }) => {
 		history,
 		userInfo,
 		successDelete,
-		createdProduct,
 		successCreate,
+		createdProduct,
 		pageNumber,
 	]);
 
 	const deleteHandler = (id) => {
-		if (window.confirm('Are you sure?')) {
+		if (window.confirm('Are you sure')) {
 			dispatch(deleteProduct(id));
 		}
 	};
@@ -112,13 +113,13 @@ const ProductListScreen = ({ history, match }) => {
 									<td>{product.brand}</td>
 									<td>
 										<LinkContainer to={`/admin/product/${product._id}/edit`}>
-											<Button className='btn-sm' variant='light'>
+											<Button variant='light' className='btn-sm'>
 												<i className='fas fa-edit'></i>
 											</Button>
 										</LinkContainer>
 										<Button
-											className='btn-sm'
 											variant='danger'
+											className='btn-sm'
 											onClick={() => deleteHandler(product._id)}>
 											<i className='fas fa-trash'></i>
 										</Button>

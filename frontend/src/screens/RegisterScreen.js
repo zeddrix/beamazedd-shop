@@ -12,7 +12,7 @@ const RegisterScreen = ({ location, history }) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
-	const [message, setMessage] = useState('');
+	const [message, setMessage] = useState(null);
 
 	const dispatch = useDispatch();
 
@@ -39,11 +39,11 @@ const RegisterScreen = ({ location, history }) => {
 	return (
 		<FormContainer>
 			<h1>Sign Up</h1>
-			{message && <Message variant='danger'> {message}</Message>}
-			{error && <Message variant='danger'> {error}</Message>}
+			{message && <Message variant='danger'>{message}</Message>}
+			{error && <Message variant='danger'>{error}</Message>}
 			{loading && <Loader />}
 			<Form onSubmit={submitHandler}>
-				<Form.Group>
+				<Form.Group controlId='name'>
 					<Form.Label>Name</Form.Label>
 					<Form.Control
 						type='name'
@@ -52,7 +52,7 @@ const RegisterScreen = ({ location, history }) => {
 						onChange={(e) => setName(e.target.value)}></Form.Control>
 				</Form.Group>
 
-				<Form.Group>
+				<Form.Group controlId='email'>
 					<Form.Label>Email Address</Form.Label>
 					<Form.Control
 						type='email'
@@ -61,7 +61,7 @@ const RegisterScreen = ({ location, history }) => {
 						onChange={(e) => setEmail(e.target.value)}></Form.Control>
 				</Form.Group>
 
-				<Form.Group>
+				<Form.Group controlId='password'>
 					<Form.Label>Password</Form.Label>
 					<Form.Control
 						type='password'

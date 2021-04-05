@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { Form, Button, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { savePaymentMethod } from '../actions/cartActions';
-import CheckoutSteps from '../components/CheckoutSteps';
 import FormContainer from '../components/FormContainer';
+import CheckoutSteps from '../components/CheckoutSteps';
+import { savePaymentMethod } from '../actions/cartActions';
 
 const PaymentScreen = ({ history }) => {
-	const shippingAddress = useSelector((state) => state.cart.shippingAddress);
+	const cart = useSelector((state) => state.cart);
+	const { shippingAddress } = cart;
 
-	if (!shippingAddress) {
+	if (!shippingAddress.address) {
 		history.push('/shipping');
 	}
 
@@ -33,11 +34,19 @@ const PaymentScreen = ({ history }) => {
 						<Form.Check
 							type='radio'
 							label='PayPal or Credit Card'
-							id='PayPay'
+							id='PayPal'
 							name='paymentMethod'
 							value='PayPal'
 							checked
 							onChange={(e) => setPaymentMethod(e.target.value)}></Form.Check>
+						{/* <Form.Check
+              type='radio'
+              label='Stripe'
+              id='Stripe'
+              name='paymentMethod'
+              value='Stripe'
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            ></Form.Check> */}
 					</Col>
 				</Form.Group>
 
