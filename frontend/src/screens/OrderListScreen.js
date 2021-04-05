@@ -12,7 +12,8 @@ const OrderListScreen = ({ history }) => {
 	const orderList = useSelector((state) => state.orderList);
 	const { loading, error, orders } = orderList;
 
-	const userInfo = useSelector((state) => state.userLogin.userInfo);
+	const userLogin = useSelector((state) => state.userLogin);
+	const { userInfo } = userLogin;
 
 	useEffect(() => {
 		if (userInfo && userInfo.isAdmin) {
@@ -39,6 +40,7 @@ const OrderListScreen = ({ history }) => {
 							<th>TOTAL</th>
 							<th>PAID</th>
 							<th>DELIVERED</th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -52,19 +54,19 @@ const OrderListScreen = ({ history }) => {
 									{order.isPaid ? (
 										order.paidAt.substring(0, 10)
 									) : (
-										<i className='fas fa-times' style={{ color: 'red' }} />
+										<i className='fas fa-times' style={{ color: 'red' }}></i>
 									)}
 								</td>
 								<td>
 									{order.isDelivered ? (
 										order.deliveredAt.substring(0, 10)
 									) : (
-										<i className='fas fa-times' style={{ color: 'red' }} />
+										<i className='fas fa-times' style={{ color: 'red' }}></i>
 									)}
 								</td>
 								<td>
 									<LinkContainer to={`/order/${order._id}`}>
-										<Button className='btn-sm' variant='light'>
+										<Button variant='light' className='btn-sm'>
 											Details
 										</Button>
 									</LinkContainer>
