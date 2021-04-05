@@ -113,3 +113,42 @@ export const createProduct = () => async (dispatch, getState) => {
 		});
 	}
 };
+
+export const updateProduct = (product) => async (dispatch, getState) => {
+	try {
+		dispatch({
+			type: c.PRODUCT_UPDATE_REQUEST,
+		});
+
+		const {
+			userLogin: { userInfo },
+		} = getState();
+
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		};
+
+		const { data } = await axios.put(
+			`/api/products/${product._id}`,
+			product,
+			config
+		);
+
+		dispatch({
+			type: c.PRODUCT_UPDATE_SUCCESS,
+			payload: data,
+		});
+	} catch (err) {
+		const message =
+			err.response && err.response.data.message
+				? err.response.data.message
+				: err.message;
+		dispatch({
+			type: c.PRODUCT_UPDATE_FAIL,
+			payload: message,
+		});
+	}
+};
