@@ -37,7 +37,10 @@ export const login = (email, password) => async (dispatch) => {
 };
 
 export const logout = () => (dispatch) => {
-	localStorage.removeItem('BEAMAZEDDSHOP');
+	localStorage.removeItem('userInfo');
+	localStorage.removeItem('cartItems');
+	localStorage.removeItem('shippingAddress');
+	localStorage.removeItem('paymentMethod');
 	dispatch({ type: c.USER_LOGOUT });
 	dispatch({ type: c.USER_DETAILS_RESET });
 	dispatch({ type: c.MY_ORDER_LIST_RESET });
@@ -72,6 +75,8 @@ export const register = (name, email, password) => async (dispatch) => {
 			type: c.USER_LOGIN_SUCCESS,
 			payload: data,
 		});
+
+		localStorage.setItem('userInfo', JSON.stringify(data));
 	} catch (error) {
 		dispatch({
 			type: c.USER_REGISTER_FAIL,
@@ -147,6 +152,8 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
 			type: c.USER_LOGIN_SUCCESS,
 			payload: data,
 		});
+
+		localStorage.setItem('userInfo', JSON.stringify(data));
 	} catch (error) {
 		const message =
 			error.response && error.response.data.message

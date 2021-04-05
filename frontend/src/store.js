@@ -2,28 +2,33 @@ import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import rootReducer from './reducer';
-import { loadState, saveState } from './localStorage';
-import throttle from 'lodash/throttle';
 
-const persistedState = loadState();
+const cartItemsFromStorage = localStorage.getItem('cartItems')
+	? JSON.parse(localStorage.getItem('cartItems'))
+	: [];
+
+const userInfoFromStorage = localStorage.getItem('userInfo')
+	? JSON.parse(localStorage.getItem('userInfo'))
+	: null;
+
+const shippingAddressFromStorage = localStorage.getItem('shippingAddress')
+	? JSON.parse(localStorage.getItem('shippingAddress'))
+	: {};
+
+const initialState = {
+	cart: {
+		cartItems: cartItemsFromStorage,
+		shippingAddress: shippingAddressFromStorage,
+	},
+	userLogin: { userInfo: userInfoFromStorage },
+};
 
 const middleware = [thunk];
 
 const store = createStore(
 	rootReducer,
-	persistedState,
+	initialState,
 	composeWithDevTools(applyMiddleware(...middleware))
-);
-
-store.subscribe(
-	throttle(() => {
-		saveState({
-			cart: store.getState().cart,
-			// orderCreate: store.getState().orderCreate,
-			// orderDetails: store.getState().orderDetails,
-			userLogin: store.getState().userLogin,
-		});
-	})
 );
 
 export default store;
